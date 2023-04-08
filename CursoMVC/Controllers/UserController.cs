@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CursoMVC.Models;
 using CursoMVC.Models.TableViewModels;
+using CursoMVC.Models.ViewModels;
 
 namespace CursoMVC.Controllers
 {
@@ -28,6 +29,36 @@ namespace CursoMVC.Controllers
             }
 
                 return View(lst);
+        }
+
+        [HttpGet]
+        public ActionResult Add() 
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Add(UserViewModel model) 
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model); 
+            }
+
+            using (var db= new cursomvcEntities()) 
+            {
+                user oUser = new user();
+                oUser.idState = 1;
+                oUser.email = model.Email;
+                oUser.edad = model.Edad;
+                oUser.password = model.Password;
+
+                db.user.Add(oUser);
+
+                db.SaveChanges();
+            }
+
+            return Redirect(Url.Content("~/User/"));
         }
     }
 }
