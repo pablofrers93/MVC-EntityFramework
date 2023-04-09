@@ -7,6 +7,12 @@
       <End Role="cstate" EntitySet="cstate" />
       <End Role="user" EntitySet="user" />
     </AssociationSet>
+    <EntitySet Name="animal" EntityType="cursomvcModel.animal" />
+    <EntitySet Name="animal_class" EntityType="cursomvcModel.animal_class" />
+    <AssociationSet Name="FK_animal_animal_class" Association="cursomvcModel.FK_animal_animal_class">
+      <End Role="animal_class" EntitySet="animal_class" />
+      <End Role="animal" EntitySet="animal" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="cstate">
     <Key>
@@ -36,6 +42,35 @@
       </Principal>
       <Dependent Role="user">
         <PropertyRef Name="idState" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="animal">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="idAnimal_class" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="animal_class" Relationship="cursomvcModel.FK_animal_animal_class" FromRole="animal" ToRole="animal_class" />
+  </EntityType>
+  <EntityType Name="animal_class">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="animal" Relationship="cursomvcModel.FK_animal_animal_class" FromRole="animal_class" ToRole="animal" />
+  </EntityType>
+  <Association Name="FK_animal_animal_class">
+    <End Type="cursomvcModel.animal_class" Role="animal_class" Multiplicity="1" />
+    <End Type="cursomvcModel.animal" Role="animal" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="animal_class">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="animal">
+        <PropertyRef Name="idAnimal_class" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
